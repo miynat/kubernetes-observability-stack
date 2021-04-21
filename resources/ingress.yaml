@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: monitoring-ingress
@@ -21,27 +21,39 @@ spec:
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: prom-grafana
-              servicePort: 80
+              service:
+                name: prom-grafana
+                port:
+                  number: 80
     - host: alert.sandbox.local
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: prom-kube-prometheus-stack-alertmanager
-              servicePort: 9093
+              service:
+                name: prom-kube-prometheus-stack-alertmanager
+                port:
+                  number: 9093
     - host: prometheus.sandbox.local
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: prom-kube-prometheus-stack-prometheus
-              servicePort: 9090
+              service:
+                name: prom-kube-prometheus-stack-prometheus
+                port:
+                  number: 9090
     - host: weave.sandbox.local
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: weave-weave-scope
-              servicePort: 80
+              service:
+                name: weave-weave-scope
+                port:
+                  number: 80

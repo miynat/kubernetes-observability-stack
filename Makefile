@@ -7,12 +7,13 @@ helm-repos:
 	helm repo add stable https://charts.helm.sh/stable
 	helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 	helm repo add jetstack https://charts.jetstack.io
+	helm repo add bitnami https://charts.bitnami.com/bitnami
 	helm repo update
 
 install: support-install helm-repos helm-install install-certs
 
 helm-install: 
-	helm install ms stable/metrics-server -n kube-system --set=args={--kubelet-insecure-tls}
+	helm install ms bitnami/metrics-server -n kube-system
 	helm install prom prometheus-community/kube-prometheus-stack -n kube-system
 	helm install weave stable/weave-scope -n kube-system
 	helm install cert-manager --namespace cert-manager --version v1.0.2 jetstack/cert-manager
@@ -24,6 +25,7 @@ support-install:
 	kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/kind/deploy.yaml
 	kubectl rollout status deployment ingress-nginx-controller -n ingress-nginx -w
 	kubectl apply -f resources/ingress.yaml -n kube-system
+	kubectl apply -f resources/metrics-server-api.yaml
 
 get-grafana-pass:
 	kubectl get secret --namespace kube-system prom-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo

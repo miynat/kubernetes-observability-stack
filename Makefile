@@ -4,7 +4,7 @@ up:
 	kind create cluster --config=resources/cluster.yaml
 helm-repos:
 	helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-	helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+	helm repo add stable https://charts.helm.sh/stable
 	helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 	helm repo add jetstack https://charts.jetstack.io
 	helm repo update

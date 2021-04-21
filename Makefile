@@ -30,6 +30,7 @@ get-grafana-pass:
 
 install-certs:
 	kubectl rollout status deployment cert-manager-webhook -n cert-manager -w
+	sleep 60
 	kubectl apply -f resources/issuer.yaml -n kube-system
 	kubectl apply -f resources/local-certificate.yaml -n kube-system
 
